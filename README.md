@@ -67,8 +67,7 @@ Learn about the basic structure of Stacks and Queues and how elements are manage
 To use these solutions, clone the repository and navigate to the relevant file to see the implementation of each problem.
 
 ```bash
-git clone https://github.com/yourusername/stack-and-queue-problems-solutions.git
-cd stack-and-queue-problems-solutions
+[git clone https://github.com/yourusername/stack-and-queue-problems-solutions.git](https://github.com/ankita007-coder/Stack-And-Queue-DSA-Sheet.git)
 ```
 
 ## Contributing
