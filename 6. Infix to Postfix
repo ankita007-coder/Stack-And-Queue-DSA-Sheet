@@ -1,0 +1,70 @@
+class Solution:
+    
+    #Function to convert an infix expression to a postfix expression.
+    def priority(self,op):
+        if op=='^':
+            return 3
+        elif op=='*' or op=='/':
+            return 2
+        elif op=='+' or op=='-':
+            return 1
+        else:
+            return -1
+    def operand(self,op):
+        if op>='A' and op<='Z' or op>='a' and op<='z' or op>='0' and op<='9':
+            return True
+        else:
+            return False
+    def InfixtoPostfix(self, exp):
+        #code here
+        st=[]
+        ans = ""
+        for ch in exp:
+            if self.operand(ch):
+                ans+=ch
+            else:
+                if ch=='(':
+                    st.append(ch)
+                elif ch==')':
+                    while st and st[-1]!='(':
+                        ans+=st.pop()
+                    st.pop()
+                else:
+                    while st and self.priority(ch)<=self.priority(st[-1]):
+                        ans+=st.pop()
+                    st.append(ch)
+        while st:
+            ans+=st.pop()
+        return ans
+        
+        
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+import atexit
+import io
+import sys
+
+# This code is contributed by Nikhil Kumar Singh(nickzuck_007)
+
+
+_INPUT_LINES = sys.stdin.read().splitlines()
+input = iter(_INPUT_LINES).__next__
+_OUTPUT_BUFFER = io.StringIO()
+sys.stdout = _OUTPUT_BUFFER
+
+@atexit.register
+
+def write():
+    sys.__stdout__.write(_OUTPUT_BUFFER.getvalue())
+
+
+if __name__ == '__main__':
+    test_cases = int(input())
+    for cases in range(test_cases) :
+        exp = str(input())
+        ob=Solution()
+        print(ob.InfixtoPostfix(exp))
+# } Driver Code Ends
