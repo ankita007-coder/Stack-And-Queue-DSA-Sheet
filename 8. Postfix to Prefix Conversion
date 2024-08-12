@@ -1,0 +1,35 @@
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+# } Driver Code Ends
+#User function Template for python3
+
+class Solution:
+    def operand(self,op):
+        if op>='A' and op<='Z' or op>='a' and op<='z' or op>='0' and op<='9':
+            return True
+        else:
+            return False
+    def postToPre(self, exp):
+        # Code here
+        st = []
+        for ch in exp:
+            if self.operand(ch):
+                st.append(ch)
+            else:
+                t1 = st.pop()
+                t2 = st.pop()
+                st.append(ch+t2+t1)
+        return st.pop()
+
+#{ 
+ # Driver Code Starts.
+if __name__ == '__main__': 
+    t = int(input ())
+    for _ in range (t):
+        postfix = input()
+        ob = Solution()
+        res = ob.postToPre(postfix)
+        print(res)
+# } Driver Code Ends
