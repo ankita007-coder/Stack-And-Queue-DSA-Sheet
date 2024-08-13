@@ -1,0 +1,14 @@
+class Solution:
+    def nextLargerElement(self, arr):
+        st = []
+        n = len(arr)
+        ans = [-1]*n
+        for i in range(n-1,-1,-1):
+            while st and arr[i]>=st[-1]:
+                st.pop()
+            if not st:
+                ans[i]= -1
+            else:
+                ans[i] = st[-1]
+            st.append(arr[i])
+        return ans
