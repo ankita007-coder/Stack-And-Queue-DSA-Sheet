@@ -1,0 +1,19 @@
+class Solution(object):
+    def asteroidCollision(self, arr):
+        """
+        :type asteroids: List[int]
+        :rtype: List[int]
+        """
+        n = len(arr)
+        st = []
+        for i in range(n):
+            if arr[i]>0:
+                st.append(arr[i])
+            else:
+                while st and st[-1]>0 and st[-1]<abs(arr[i]):
+                    st.pop()
+                if st and st[-1]==abs(arr[i]):
+                    st.pop()
+                elif not st or st[-1]<0:
+                    st.append(arr[i])
+        return st
