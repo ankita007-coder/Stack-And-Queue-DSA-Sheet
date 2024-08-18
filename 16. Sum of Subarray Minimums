@@ -1,0 +1,38 @@
+class Solution(object):
+    def PSEE(self,arr):
+        st = []
+        n = len(arr)
+        psee = [-1]*n
+        for i in range(n):
+            while st and arr[st[-1]]>arr[i]:
+                st.pop()
+            if st:
+                psee[i]=st[-1]
+            st.append(i)
+        return psee
+    def NSE(self,arr):
+        st = []
+        n = len(arr)
+        nse = [n]*n
+        for i in range(n-1,-1,-1):
+            while st and arr[st[-1]]>=arr[i]:
+                st.pop()
+            if st:
+                nse[i]=st[-1]
+            st.append(i)
+        return nse
+    def sumSubarrayMins(self, arr):
+        """
+        :type arr: List[int]
+        :rtype: int
+        """
+        psee = self.PSEE(arr)
+        nse = self.NSE(arr)
+        n = len(arr)
+        mod = 10**9+7
+        total = 0
+        for i in range(n):
+            amount = (i-psee[i])*(nse[i]-i)
+            count = (amount*arr[i])%mod
+            total=(total+count)%mod
+        return total
