@@ -1,0 +1,66 @@
+#the approach is that we take the total of subarray minimums and maximums and then subtract total min from total max
+class Solution(object):
+    def PSEE(self,arr):
+        st = []
+        n = len(arr)
+        psee = [-1]*n
+        for i in range(n):
+            while st and arr[st[-1]]>arr[i]:
+                st.pop()
+            if st:
+                psee[i]=st[-1]
+            st.append(i)
+        return psee
+    def NSE(self,arr):
+        st = []
+        n = len(arr)
+        nse = [n]*n
+        for i in range(n-1,-1,-1):
+            while st and arr[st[-1]]>=arr[i]:
+                st.pop()
+            if st:
+                nse[i]=st[-1]
+            st.append(i)
+        return nse
+    def PGEE(self,arr):
+        st = []
+        n = len(arr)
+        pgee = [-1]*n
+        for i in range(n):
+            while st and arr[st[-1]]<arr[i]:
+                st.pop()
+            if st:
+                pgee[i]=st[-1]
+            st.append(i)
+        return pgee
+    def NGE(self,arr):
+        st = []
+        n = len(arr)
+        nge = [n]*n
+        for i in range(n-1,-1,-1):
+            while st and arr[st[-1]]<=arr[i]:
+                st.pop()
+            if st:
+                nge[i]=st[-1]
+            st.append(i)
+        return nge
+    def subArrayRanges(self, arr):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        psee = self.PSEE(arr)
+        nse = self.NSE(arr)
+        pgee = self.PGEE(arr)
+        nge = self.NGE(arr)
+        n = len(arr)
+        totalmax, totalmin = 0, 0
+        
+        for i in range(n):
+            minamount = (i - psee[i]) * (nse[i] - i) * arr[i]        
+            maxamount = (i - pgee[i]) * (nge[i] - i) * arr[i]
+            totalmax = (totalmax + maxamount)
+            totalmin = (totalmin + minamount)
+        total = (totalmax - totalmin)
+
+        return total
