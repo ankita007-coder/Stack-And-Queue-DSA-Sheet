@@ -1,0 +1,43 @@
+#brute 
+class Solution:
+    def celebrity(self, M):
+        n = len(M)
+        knowMe =[0]*n
+        Iknow = [0]*n
+
+        for i in range(n):
+            for j in range(n):
+                if M[i][j]==1:
+                    Iknow[i]+=1
+                if M[j][i]==1:
+                    knowMe[i]+=1
+        
+        for i in range(n):
+            if Iknow[i]==0 and knowMe[i]==n-1:
+                return i
+        return -1
+
+#optimal
+class Solution:
+    def celebrity(self, M):
+        n = len(M)
+        top, bottom = 0, n - 1
+        
+        # Narrow down to a single candidate
+        while top < bottom:
+            if M[top][bottom] == 1:  # top knows bottom, so top can't be a celebrity
+                top += 1
+            else:  # bottom can't be a celebrity
+                bottom -= 1
+        
+        # At the end of this loop, top == bottom, and top is the candidate
+        candidate = top
+        
+        # Verify the candidate
+        for i in range(n):
+            if i != candidate:
+                # The candidate should not know anyone and should be known by everyone
+                if M[candidate][i] == 1 or M[i][candidate] == 0:
+                    return -1
+        
+        return candidate
