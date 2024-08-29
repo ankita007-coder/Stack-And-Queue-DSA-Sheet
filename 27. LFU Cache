@@ -1,0 +1,47 @@
+from collections import defaultdict, deque
+
+class LFUCache:
+    def __init__(self, capacity):
+        self.capacity = capacity
+        self.cache = {}  # key -> value
+        self.freq_map = defaultdict(deque)  # frequency -> deque of keys
+        self.key_freq = {}  # key -> frequency
+        self.min_freq = 0
+
+    def _update_freq(self, key):
+        # Remove key from the current frequency deque
+        freq = self.key_freq[key]
+        self.freq_map[freq].remove(key)
+        # Update the min frequency if necessary
+        if not self.freq_map[freq] and self.min_freq == freq:
+            self.min_freq += 1
+        # Increment the frequency of the key
+        new_freq = freq + 1
+        self.key_freq[key] = new_freq
+        self.freq_map[new_freq].append(key)
+    
+    def get(self, key):
+        if key not in self.cache:
+            return -1
+        # Update frequency and return the value
+        self._update_freq(key)
+        return self.cache[key]
+
+    def put(self, key, value):
+        if self.capacity == 0:
+            return
+        if key in self.cache:
+            # Update value and frequency
+            self.cache[key] = value
+            self._update_freq(key)
+        else:
+            if len(self.cache) >= self.capacity:
+                # Evict the least frequently used key
+                lfu_key = self.freq_map[self.min_freq].popleft()
+                del self.cache[lfu_key]
+                del self.key_freq[lfu_key]
+            # Add the new key
+            self.cache[key] = value
+            self.key_freq[key] = 1
+            self.freq_map[1].append(key)
+            self.min_freq = 1
